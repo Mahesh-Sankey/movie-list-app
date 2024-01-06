@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView } from 'react-native';
+import GenreFilter from '../components/GenreFilter';
 
 const HomeScreen: React.FC = () => {
-  // Implement the HomeScreen component with necessary state and functions
+  const [selectedGenres, setSelectedGenres] = useState<string[]>(['All']);
+
+  const handleSelectGenres = (selectedGenres: string[]) => {
+    setSelectedGenres(selectedGenres);
+    
+  };
   return (
     <View>
-      {/* Implement UI with GenreFilter, SearchBar, and MovieList components */}
+    <GenreFilter selectedGenres={selectedGenres} onSelectGenres={handleSelectGenres} />
     </View>
   );
 };

@@ -27,7 +27,7 @@ const AppNavigator = () => {
             },
             headerTitleStyle: {
               fontSize: 18,
-              color: '#F0283C'
+              color: '#F0283C',
             },
             headerTintColor: 'black',
           }}>
@@ -50,7 +50,6 @@ const AppNavigator = () => {
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
-    // backgroundColor: '#121212',
   },
   headerContainer: {
     height: 80,
