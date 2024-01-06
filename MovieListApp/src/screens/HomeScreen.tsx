@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
-import {View, ScrollView} from 'react-native';
+// HomeScreen.tsx
+
+import React, { useState } from 'react';
+import { View } from 'react-native';
 import GenreFilter from '../components/GenreFilter';
 import MovieCard from '../components/MovieCard';
 
 const HomeScreen: React.FC = () => {
-  const [selectedGenres, setSelectedGenres] = useState<string[]>(['All']);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>(['All']); // Initialize selectedGenres
 
   const handleSelectGenres = (selectedGenres: string[]) => {
     setSelectedGenres(selectedGenres);
@@ -12,12 +14,9 @@ const HomeScreen: React.FC = () => {
 
   return (
     <View>
-      <GenreFilter
-        selectedGenres={selectedGenres}
-        onSelectGenres={handleSelectGenres}
-      />
+      <GenreFilter selectedGenres={selectedGenres} onSelectGenres={handleSelectGenres} />
       <View>
-        <MovieCard />
+        <MovieCard selectedGenres={selectedGenres} />
       </View>
     </View>
   );

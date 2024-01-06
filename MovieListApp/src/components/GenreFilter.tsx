@@ -1,59 +1,47 @@
-import React from 'react';
-import {View,ScrollView,TouchableOpacity,Text,StyleSheet} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { getGenreList } from '../services/movieService';
+
 interface GenreFilterProps {
-  selectedGenres?: string[];
+  selectedGenres: string[]; // Add this line
   onSelectGenres: (selectedGenres: string[]) => void;
 }
 
-const allGenres = [
-  'All',
-  'Action',
-  'Comedy',
-  'Horror',
-  'Drama',
-  'Sci-Fi',
-  'Romance',
-  'Korean',
-  'Anime',
-];
+const GenreFilter: React.FC<GenreFilterProps> = ({ selectedGenres, onSelectGenres }) => {
+  const [allGenres, setAllGenres] = useState<string[]>([]);
 
-const GenreFilter: React.FC<GenreFilterProps> = ({
-  selectedGenres = [],
-  onSelectGenres,
-}) => {
-  const handleGenrePress = (genre: string) => {
-    let updatedGenres;
-    if (genre === 'All') {
-      updatedGenres = ['All'];
-    } else {
-      updatedGenres = selectedGenres.includes(genre) ? ['All'] : [genre];
-    }
-    onSelectGenres(updatedGenres);
-  };
+  useEffect(() => {
+    const fetchGenres = async () => {
+      try {
+        const genreList = await getGenreList();
+        const genres = ['All', ...genreList.map((genre) => genre.name)];
+        setAllGenres(genres);
+      } catch (error) {
+        console.error('Error fetching genres:', error);
+      }
+    };
+
+    fetchGenres();
+  }, []);
 
   return (
     <View style={styles.genreContainer}>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}>
-        {allGenres.map(genre => (
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollViewContent}>
+        {allGenres.map((genre) => (
           <TouchableOpacity
             key={genre}
             style={[
               styles.genre,
-              (selectedGenres.includes(genre) ||
-                (genre === 'All' && selectedGenres.length === 0)) &&
-                styles.selectedGenre,
+              selectedGenres.includes(genre) && styles.selectedGenre,
             ]}
-            onPress={() => handleGenrePress(genre)}>
+            onPress={() => onSelectGenres([genre])}
+          >
             <Text
               style={[
                 styles.genreText,
-                (selectedGenres.includes(genre) ||
-                  (genre === 'All' && selectedGenres.length === 0)) &&
-                  styles.selectedGenreText,
-              ]}>
+                selectedGenres.includes(genre) && styles.selectedGenreText,
+              ]}
+            >
               {genre}
             </Text>
           </TouchableOpacity>
